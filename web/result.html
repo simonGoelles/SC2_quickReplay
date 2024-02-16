@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StarCraft 2 Replay Viewer - Result</title>
+</head>
+<body>
+    <h2>Replay Information</h2>
+    <p>Map Name: {{ replay_info.map_name }}</p>
+    <p>Game Length: {{ replay_info.game_length }} seconds</p>
+
+    <h2>Players</h2>
+    {% for player in replay_info.players %}
+        <div>
+            <p>Name: {{ player.name }}</p>
+            <p>Race: {{ player.race }}</p>
+            <p>APM: {{ player.apm }}</p>
+            <p>Result: {{ player.result }}</p>
+        </div>
+    {% endfor %}
+</body>
+</html>
