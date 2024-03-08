@@ -1,7 +1,11 @@
 from flask import Flask, render_template, request
 import sc2reader
+import os
 
 app = Flask(__name__)
+
+uploads_dir = os.path.join(app.static_folder, 'uploads')
+os.makedirs(uploads_dir, exist_ok=True)
 
 
 @app.route('/')
@@ -19,7 +23,7 @@ def upload():
     if file.filename == '':
         return "No selected file"
 
-    replay_path = f"uploads/{file.filename}"
+    replay_path = os.path.join(uploads_dir, file.filename)
     file.save(replay_path)
 
     replay_info = read_replay(replay_path)
@@ -36,15 +40,18 @@ def read_replay(replay_path):
     }
 
     for player in replay.players:
+        apm = player.apm_realtime
+
         player_info = {
             "name": player.name,
             "race": player.pick_race,
-            "apm": player.apm,
+            "apm": apm,
             "result": player.result
         }
         replay_info["players"].append(player_info)
 
     return replay_info
+
 
 
 if __name__ == '__main__':
