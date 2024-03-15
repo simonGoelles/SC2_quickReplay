@@ -16,7 +16,11 @@
         <div>
             <p>Name: {{ player.name }}</p>
             <p>Race: {{ player.race }}</p>
-            <p>APM: {{ player.apm }}</p>
+            {% if player.apm == 0 %}
+                <p>APM: Average AI APM</p>
+            {% else %}
+                <p>APM: {{ player.apm }}</p>
+            {% endif %}
             <p>Result: {{ player.result }}</p>
         </div>
     {% endfor %}

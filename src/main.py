@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request
 import sc2reader
+from sc2reader.engine.plugins import APMTracker
 import os
+import datetime
 
 app = Flask(__name__)
 
@@ -40,7 +42,10 @@ def read_replay(replay_path):
     }
 
     for player in replay.players:
-        apm = player.apm_realtime
+        if player.is_human:
+            apm = player.avg_apm
+        else:
+            apm = "-Avg-AI-APM"
 
         player_info = {
             "name": player.name,
