@@ -42,10 +42,11 @@ def read_replay(replay_path):
     }
 
     for player in replay.players:
-        if player.is_human:
-            apm = player.avg_apm
-        else:
-            apm = "-Avg-AI-APM"
+        apm = float("{:.2}".format(player.avg_apm))
+        #if player.is_human:
+        #    apm = float("{:.2}".format(player.avg_apm))
+        #else:
+        #    apm = "-Avg-AI-APM"
 
         player_info = {
             "name": player.name,

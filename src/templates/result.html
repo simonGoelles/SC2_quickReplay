@@ -19,9 +19,9 @@
             {% if player.apm == 0 %}
                 <p>APM: Average AI APM</p>
             {% else %}
-                <p>APM: {{ player.apm }}</p>
+                <p>APM: {{ float("{:.2f}".format(player.avg_apm)) }}</p>
             {% endif %}
-            <p>Result: {{ player.result }}</p>
+                <p>Result: {{ player.result }}</p>
         </div>
     {% endfor %}
 </body>
