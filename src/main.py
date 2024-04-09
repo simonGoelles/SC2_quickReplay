@@ -3,6 +3,7 @@ import sc2reader
 from sc2reader.engine.plugins import APMTracker, SelectionTracker
 import os
 import datetime
+import re
 
 sc2reader.engine.register_plugin(APMTracker())
 
@@ -44,16 +45,34 @@ def read_replay(replay_path):
     }
 
     for player in replay.players:
+
+        pattern = r"\((.*?)\)"
+        difficulty = re.findall(pattern, player.name)
+
+        resources_mined = 0
+        resources_lost = 0
+
+        for event in replay.events:
+            if isinstance(event, sc2reader.events.tracker.UnitBornEvent):
+                if event.control_pid == player.pid:
+                    resources_mined += event.unit_value_minerals
+
+            elif isinstance(event, sc2reader.events.tracker.UnitDiedEvent):
+                if event.killing_player_id == player.pid:
+                    resources_lost += event.unit_value_minerals
+
         if player.is_human:
             apm = player.avg_apm
         else:
-            apm = "-Avg-AI-APM"
+            apm = f"Avg AI {difficulty[0]} APM"
 
         player_info = {
             "name": player.name,
             "race": player.pick_race,
+            "resources mined": resources_mined,
+            "resources lost": resources_lost,
             "apm": apm,
-            "result": player.result
+            "result": player.result 
         }
         replay_info["players"].append(player_info)
 

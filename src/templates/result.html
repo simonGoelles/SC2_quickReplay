@@ -9,7 +9,7 @@
 <body>
     <h2>Replay Information</h2>
     <p>Map Name: {{ replay_info.map_name }}</p>
-    <p>Game Length: {{ replay_info.game_length }} seconds</p>
+    <p>Game Length: {{ replay_info.game_length / 60 }} minutes</p>
 
     <h2>Players</h2>
     {% for player in replay_info.players %}
