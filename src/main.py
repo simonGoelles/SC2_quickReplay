@@ -52,14 +52,7 @@ def read_replay(replay_path):
         resources_mined = 0
         resources_lost = 0
 
-        for event in replay.events:
-            if isinstance(event, sc2reader.events.tracker.UnitBornEvent):
-                if event.control_pid == player.pid:
-                    resources_mined += event.unit_value_minerals
-
-            elif isinstance(event, sc2reader.events.tracker.UnitDiedEvent):
-                if event.killing_player_id == player.pid:
-                    resources_lost += event.unit_value_minerals
+        
 
         if player.is_human:
             apm = player.avg_apm
