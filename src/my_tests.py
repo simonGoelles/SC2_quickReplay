@@ -2,7 +2,7 @@ import pytest
 from unittest.mock import patch, MagicMock
 from main import app
 
-# Sample player data for testing
+# another sample player data for testing here
 PLAYER_DATA = {
     "name": "Player1",
     "race": "Protoss",
@@ -25,7 +25,7 @@ def test_file_upload_success(client):
     # Make a request to the upload endpoint with the mock file
     response = client.post('/upload', data={'file': mock_file})
 
-    assert response.status_code == 200
+    assert response.status_code == 200 # 200 heist ok
 
     assert b"File uploaded successfully" in response.data
 
