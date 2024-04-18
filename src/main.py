@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 import sc2reader
 from sc2reader.engine.plugins import APMTracker, SelectionTracker
 import os
@@ -16,6 +16,18 @@ os.makedirs(uploads_dir, exist_ok=True)
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/get_player_info')
+def get_player_info():
+    # Mocked player data for testing
+    player_data = {
+        "name": "Player1",
+        "race": "Protoss",
+        "apm": 150,
+        "result": "Win"
+    }
+
+    return jsonify(player_data)
 
 
 @app.route('/upload', methods=['POST'])
@@ -52,7 +64,14 @@ def read_replay(replay_path):
         resources_mined = 0
         resources_lost = 0
 
-        
+        for event in replay.events:
+            if isinstance(event, sc2reader.events.tracker.UnitBornEvent):
+                if event.control_pid == player.pid:
+                    resources_mined += event.unit_value_minerals
+
+            elif isinstance(event, sc2reader.events.tracker.UnitDiedEvent):
+                if event.killing_player_id == player.pid:
+                    resources_lost += event.unit_value_minerals
 
         if player.is_human:
             apm = player.avg_apm
